@@ -1,58 +1,13 @@
 import React from "react";
-import styles from "./styles/Card.css";
+import "./styles/Card.css";
 
 const Card = (props) => {
   return (
-    <div>
-      <div className="card">{props.card}</div>
+    <div className="card" key={props.index}>
+      <h2>{props.name}</h2>
+      <h2>{props.suit}</h2>
     </div>
   );
 };
-/*
-type CardProps = {
-  value: string,
-  suit: string,
-  hidden: boolean,
-};
-
-const Card: React.FC<CardProps> = ({ value, suit, hidden }) => {
-  const getColor = () => {
-    if (suit === "♠" || suit === "♣") {
-      return styles.black;
-    } else {
-      return styles.red;
-    }
-  };
-
-
-
-const Card = (props) => {
-  return (
-    <div>
-      <div className="card">{props}</div>
-    </div>
-  );
-};
-  */
-export default Card;
-
-/* const getCard = () => {
-    if (hidden) {
-      return <div className={styles.hiddenCard} />;
-    } else {
-      return (
-        <div className={styles.card}>
-          <div className={getColor()}>
-            <h1 className={styles.value}>{value}</h1>
-            <h1 className={styles.suit}>{suit}</h1>
-          </div>
-        </div>
-      );
-    }
-  };
-
-  return <>{getCard()}</>;
-};
 
 export default Card;
-  */

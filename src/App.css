@@ -14,11 +14,47 @@ body {
   margin: 20px;
 }
 
+.blackjack-logo-front {
+  width: 700px;
+  margin: 40px;
+}
+
 .primary-button {
   width: 100px;
   height: 30px;
   margin: 10px;
   background-color: rgb(239, 228, 102);
   border: none;
+  border-radius: 5px;
+}
+
+h1 {
+  font-size: 35px;
+  color: white;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 25px;
+  margin: 14px;
+}
+
+.name-input {
+  width: 15%;
+  height: 30px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.startPlay {
+  width: 300px;
+  height: 40px;
+  margin: 10px;
+  background-color: rgb(239, 228, 102);
+  border: none;
+  font-weight: bold;
   border-radius: 5px;
 }
