@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import blackJackLogo from "../public/images/blackJackLogo.png";
+import blackJackLogo from "./images/blackjack_logo.png";
 import PrimaryButton from "../components/PrimaryButton";
 import "./styles/Card.css";
 import deck from "../deck";

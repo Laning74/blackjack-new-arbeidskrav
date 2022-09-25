@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import blackJackLogo from "../images/blackjack_logo.png";
+import blackJackLogo from "./images/blackjack_logo.png";
 
 const StartPlay = ({ startToPlay }) => {
   const [name, setName] = useState("");
