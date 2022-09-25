@@ -9,6 +9,16 @@ import { randomPlayerArray, randomDealerArray } from "./RandomCardArray";
 export default function Play() {
   const [playerDeck, setPlayerDeck] = useState(randomPlayerArray);
   const [dealerDeck, setDealerDeck] = useState(randomDealerArray);
+
+  const [playerCount, setPlayerCount] = useState(0);
+  const [dealerCount, setDealerCount] = useState(0);
+
+  const [playerScore, setPlayerScore] = useState(0);
+  const [dealerScore, setDealerScore] = useState(0);
+
+  const [playerMessage, setPlayerMessage] = useState("");
+  const [dealerMessage, setDealerMessage] = useState("");
+
   const [playerName, setPlayerName] = useState("");
   function hitButton() {
     const randomCard = Math.floor(Math.random() * deck.length);
@@ -19,14 +29,31 @@ export default function Play() {
     const randomCard = Math.floor(Math.random() * deck.length);
     setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
   }
+  /*
+  useEffect(() => {
+    calculate(playerDeck, setPlayerScore);
+    setPlayerCount(playerCount + 1);
+  }, [playerDeck]);
 
+  useEffect(() => {
+    calculate(dealerDeck, setDealerScore);
+    setDealerCount(dealerCount + 1);
+  }, [dealerDeck]);
+*/
   useEffect(() => {
     const playerNames = localStorage.getItem("Name");
     if (playerNames) {
       setPlayerName(playerNames);
     }
   }, []);
-
+  /*
+  const calculate = (playerDeck) => {
+    let total = 0;
+    deck.forEach((item) => {
+      total += item.value;
+    });
+  };
+*/
   return (
     <div>
       <img

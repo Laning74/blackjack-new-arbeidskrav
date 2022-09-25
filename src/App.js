@@ -4,14 +4,14 @@ import Play from "./components/Play";
 import StartPlay from "./components/StartPlay";
 
 function App() {
-  const [modestageMode, setStageMode] = useState("start");
+  const [stageMode, setStageMode] = useState("start");
 
   return (
     <>
-      {modestageMode === "start" && (
+      {stageMode === "start" && (
         <StartPlay startToPlay={() => setStageMode("battle")} />
       )}
-      {modestageMode === "battle" && <Play />}
+      {stageMode === "battle" && <Play />}
     </>
   );
 }
