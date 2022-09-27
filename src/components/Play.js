@@ -73,7 +73,7 @@ export default function Play({ restartToPlay }) {
     // handleScore();
     // setPlayerScore(playerScore);
 
-    // handleScore();
+    handleScore();
   }
 
   function standButton() {
@@ -94,72 +94,16 @@ export default function Play({ restartToPlay }) {
       setPlayerMessage("Tie!");
       setDealerMessage("Tie!");
     }
+    handleScore();
     console.log("playerdeck", playerDeck);
     console.log("dealerdeck", dealerDeck);
   }
 
-  // function newGameButton() {
-  //   return (
-  //     <div>
-  //       <StartPlay startToPlay={() => setStageMode("start")} />
-  //     </div>
-  //   );
+  // function aceScore() {
+
   // }
 
-  // return getPlayerScore;
-
-  // const getScore = (playerCount, setPlayerScore) => {
-  //   let totalScore = 0;
-
-  //   for (let i = 0; i < playerCount.length; i++) {
-  //     totalScore += playerCount[i];
-  //     setPlayerScore(playerCount + 1);
-  //   }
-  //   return totalScore;
-  // };
-
-  // function calculate() {
-  //   const calculatePlayer = (playerDeck, setPlayerScore);
-  //   for (let i = 0; i < playerDeck.length; i++) setPlayerCount(playerCount + 1);
-  // }
-  // return calculatePlayer;
-
-  // useEffect(() => {
-  //   calculatePlayer(playerDeck, setPlayerScore);
-  //   setPlayerCount(playerCount + 1);
-  // }, [playerDeck]);
-
-  // const calculatePlayer = (playerDeck, setPlayerScore);
-
-  // function calculate(playerDeck) {
-  //   let calculatePlayer = 0;
-  //   for (let i = 0; i < playerDeck.length; i++) {
-  //     // var card = playerDeck[i]["card " + i];
-  //     // if (!isNaN(card)) {
-  //     //   if (card >= 2 && card <= 6) {
-  //     //     calculatePlayer++;
-  //     //   } else if (card >= 10) {
-  //     //     calculatePlayer--;
-  //     //   }
-  //     // } else if (card === "face or ace") {
-  //     //   calculatePlayer--;
-  //     // }
-  //   }
-  //   return calculatePlayer;
-  // }
-
-  /*
-  useEffect(() => {
-    calculate(playerDeck, setPlayerScore);
-    setPlayerCount(playerCount + 1);
-  }, [playerDeck]);
-
-  useEffect(() => {
-    calculate(dealerDeck, setDealerScore);
-    setDealerCount(dealerCount + 1);
-  }, [dealerDeck]);
-*/
-
+  // let newDealerScore = calculatePlayer;
   // function ReduceAce(playerScore, playerAceScore) {
   //   while (playerScore > 21 && playerAceScore > 0) {
   //     playerScore -= 10;
@@ -196,20 +140,6 @@ export default function Play({ restartToPlay }) {
   //     return 0;
   //   }
 
-  // let calculate = 0;
-
-  // deck.forEach((item) => {
-  //   calculate = calculate + item.value;
-  // });
-  // console.log("TOTAL", calculate);
-  /*
-  const calculate = (playerDeck) => {
-    let total = 0;
-    deck.forEach((item) => {
-      total += item.value;
-    });
-  };
-*/
   return (
     <div>
       <img

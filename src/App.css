@@ -15,8 +15,14 @@ body {
 }
 
 .blackjack-logo-front {
-  width: 700px;
+  width: 680px;
   margin: 40px;
+}
+
+.blackjack-play-btn {
+  width: 150px;
+  margin: 20px;
+  cursor: pointer;
 }
 
 .primary-button {
