@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import blackJackLogo from "../images/blackjack_logo.png";
+import PrimaryButton from "../components/PrimaryButton";
 
 const StartPlay = ({ startToPlay }) => {
   const [name, setName] = useState("");
@@ -21,11 +22,26 @@ const StartPlay = ({ startToPlay }) => {
         onChange={(e) => setName(e.target.value)}
       ></input>
       <br />
-      <button className="startPlay" onClick={startToPlay}>
+
+      {name === "" ? (
+        <PrimaryButton text={"Start playing BlackJack"} onClick={startToPlay} />
+      ) : (
+        ""
+      )}
+
+      {/* <button className="startPlay" onClick={startToPlay}>
         Start playing BlackJack
-      </button>
+      </button> */}
     </div>
   );
 };
 
 export default StartPlay;
+
+//  {
+//    name === !"" ? (
+//      <PrimaryButton text={"Start playing BlackJack"} onClick={startToPlay} />
+//    ) : (
+//      "startToPlay"
+//    );
+//  }

@@ -11,7 +11,9 @@ function App() {
       {stageMode === "start" && (
         <StartPlay startToPlay={() => setStageMode("battle")} />
       )}
-      {stageMode === "battle" && <Play />}
+      {stageMode === "battle" && (
+        <Play restartToPlay={() => setStageMode("start")} />
+      )}
     </>
   );
 }

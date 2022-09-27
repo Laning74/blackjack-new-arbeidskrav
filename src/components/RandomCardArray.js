@@ -1,6 +1,5 @@
 import deck from "../deck";
 
-// Get 10 students function
 export let randomPlayerArray = [];
 for (let i = 0; i < 2; i++) {
   let randomCard = deck[Math.floor(Math.random() * deck.length)];

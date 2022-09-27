@@ -6,7 +6,7 @@ import deck from "../deck";
 import Card from "../components/Card";
 import { randomPlayerArray, randomDealerArray } from "./RandomCardArray";
 
-export default function Play() {
+export default function Play({ restartToPlay }) {
   const [playerDeck, setPlayerDeck] = useState(randomPlayerArray);
   const [dealerDeck, setDealerDeck] = useState(randomDealerArray);
 
@@ -24,6 +24,13 @@ export default function Play() {
 
   const [playerName, setPlayerName] = useState("");
 
+  const [score, setScore] = useState([]);
+  useEffect(() => {
+    localStorage.setItem("score", JSON.stringify(playerScore));
+  }, [playerScore]);
+
+  // const [stageMode, setStageMode] = useState("start");
+  // console.log(restartToPlay);
   useEffect(() => {
     const playerNames = localStorage.getItem("Name");
     if (playerNames) {
@@ -33,14 +40,14 @@ export default function Play() {
 
   useEffect(() => {
     handleScore();
-    console.log(dealerScore);
-    console.log(playerScore);
-  }, [playerScore, dealerScore, playerDeck]);
+    // console.log(dealerScore);
+    // console.log(playerScore);
+  }, [playerScore, dealerScore, playerDeck, dealerDeck]);
 
   function handleScore() {
     let calculatePlayer = 0;
     let calculateDealer = 0;
-    console.log(playerDeck);
+    // console.log(playerDeck);
     playerDeck.forEach((item) => {
       calculatePlayer += item.value;
     });
@@ -51,19 +58,19 @@ export default function Play() {
     });
     setDealerScore(calculateDealer);
     if (playerScore === 21) {
-      setPlayerMessage("Du vant!");
+      setPlayerMessage("The winner! 🏆");
     } else if (playerScore > 21) {
-      setPlayerMessage("Du tapte!");
+      setPlayerMessage("Looser");
     }
-    console.log("Total player: " + calculatePlayer);
-    console.log("Total dealer: " + calculateDealer);
+    // console.log("Total player: " + calculatePlayer);
+    // console.log("Total dealer: " + calculateDealer);
   }
 
   function hitButton() {
     // let newPlayerScore
     const randomCard = Math.floor(Math.random() * deck.length);
     setPlayerDeck((playerDeck) => [...playerDeck, deck[randomCard]]);
-    handleScore();
+    // handleScore();
     // setPlayerScore(playerScore);
 
     // handleScore();
@@ -73,15 +80,31 @@ export default function Play() {
     // let newDealerScore = calculatePlayer;
     const randomCard = Math.floor(Math.random() * deck.length);
     setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
+    if (dealerScore === 21) {
+      setDealerMessage("The winner! 🏆");
+      setPlayerMessage("Looser");
+    }
+    if (dealerScore > playerScore) {
+      setDealerMessage("The winner! 🏆");
+      setPlayerMessage("Looser");
+    } else if (dealerScore < playerScore) {
+      setPlayerMessage("The winner! 🏆");
+      setDealerMessage("Looser");
+    } else if (dealerScore === playerScore) {
+      setPlayerMessage("Tie!");
+      setDealerMessage("Tie!");
+    }
+    console.log("playerdeck", playerDeck);
+    console.log("dealerdeck", dealerDeck);
   }
 
-  function newGameButton() {
-    setDealerDeck(randomDealerArray);
-    console.log(randomDealerArray);
-    setPlayerDeck(randomPlayerArray);
-    console.log(randomPlayerArray);
-    setDealerMessage("");
-  }
+  // function newGameButton() {
+  //   return (
+  //     <div>
+  //       <StartPlay startToPlay={() => setStageMode("start")} />
+  //     </div>
+  //   );
+  // }
 
   // return getPlayerScore;
 
@@ -195,7 +218,7 @@ export default function Play() {
         className="blackjack-logo"
       />
       <h1>{playerName} velkommen til og spille Online BlackJack!</h1>
-      <PrimaryButton text={"New game"} onClick={newGameButton} />
+      <PrimaryButton text={"New game"} onClick={restartToPlay} />
 
       {playerMessage === "" ? (
         <PrimaryButton text={"Hit"} onClick={hitButton} />
