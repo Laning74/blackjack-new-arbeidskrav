@@ -24,42 +24,63 @@ export default function Play() {
 
   const [playerName, setPlayerName] = useState("");
 
-  let calculatePlayer = 0;
-
-  function handleScore() {
-    playerDeck.forEach((item) => {
-      calculatePlayer = calculatePlayer + item.value;
-      setPlayerScore(calculatePlayer);
-      console.log(calculatePlayer);
-    });
-
-    let calculateDealer = 0;
-
-    dealerDeck.forEach((item) => {
-      calculateDealer = calculateDealer + item.value;
-    });
-  }
+  useEffect(() => {
+    const playerNames = localStorage.getItem("Name");
+    if (playerNames) {
+      setPlayerName(playerNames);
+    }
+  }, []);
 
   useEffect(() => {
     handleScore();
-    setPlayerScore(calculatePlayer);
-  }, [playerScore]);
+    console.log(dealerScore);
+    console.log(playerScore);
+  }, [playerScore, dealerScore, playerDeck]);
 
-  function hitButton() {
-    let newPlayerScore = calculatePlayer;
-    const randomCard = Math.floor(Math.random() * deck.length);
-    setPlayerDeck((playerDeck) => [...playerDeck, deck[randomCard]]);
-    console.log("Dette er newplayerscore", newPlayerScore);
-    setPlayerScore(newPlayerScore);
-    if (newPlayerScore > 21) {
+  function handleScore() {
+    let calculatePlayer = 0;
+    let calculateDealer = 0;
+    console.log(playerDeck);
+    playerDeck.forEach((item) => {
+      calculatePlayer += item.value;
+    });
+    setPlayerScore(calculatePlayer);
+
+    dealerDeck.forEach((item) => {
+      calculateDealer += item.value;
+    });
+    setDealerScore(calculateDealer);
+    if (playerScore === 21) {
+      setPlayerMessage("Du vant!");
+    } else if (playerScore > 21) {
       setPlayerMessage("Du tapte!");
     }
+    console.log("Total player: " + calculatePlayer);
+    console.log("Total dealer: " + calculateDealer);
+  }
+
+  function hitButton() {
+    // let newPlayerScore
+    const randomCard = Math.floor(Math.random() * deck.length);
+    setPlayerDeck((playerDeck) => [...playerDeck, deck[randomCard]]);
     handleScore();
+    // setPlayerScore(playerScore);
+
+    // handleScore();
   }
 
   function standButton() {
+    // let newDealerScore = calculatePlayer;
     const randomCard = Math.floor(Math.random() * deck.length);
     setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
+  }
+
+  function newGameButton() {
+    setDealerDeck(randomDealerArray);
+    console.log(randomDealerArray);
+    setPlayerDeck(randomPlayerArray);
+    console.log(randomPlayerArray);
+    setDealerMessage("");
   }
 
   // return getPlayerScore;
@@ -116,20 +137,13 @@ export default function Play() {
   }, [dealerDeck]);
 */
 
-  useEffect(() => {
-    const playerNames = localStorage.getItem("Name");
-    if (playerNames) {
-      setPlayerName(playerNames);
-    }
-  }, []);
-
-  function ReduceAce(playerScore, playerAceScore) {
-    while (playerScore > 21 && playerAceScore > 0) {
-      playerScore -= 10;
-      playerAceScore -= 1;
-    }
-    return playerScore;
-  }
+  // function ReduceAce(playerScore, playerAceScore) {
+  //   while (playerScore > 21 && playerAceScore > 0) {
+  //     playerScore -= 10;
+  //     playerAceScore -= 1;
+  //   }
+  //   return playerScore;
+  // }
 
   // function GetScore() {
   //   playerScore = ReduceAce(playerScore, playerAceScore);
@@ -181,17 +195,25 @@ export default function Play() {
         className="blackjack-logo"
       />
       <h1>{playerName} velkommen til og spille Online BlackJack!</h1>
-      <PrimaryButton text={"New game"} />
-      <PrimaryButton text={"Hit"} onClick={hitButton} />
+      <PrimaryButton text={"New game"} onClick={newGameButton} />
+
+      {playerMessage === "" ? (
+        <PrimaryButton text={"Hit"} onClick={hitButton} />
+      ) : (
+        ""
+      )}
+
       <PrimaryButton text={"Stand"} onClick={standButton} />
-      {/* // <h2>Dealer ({calculateDealer})</h2> */}
+      <h2>
+        Dealer ({dealerScore}) {dealerMessage}
+      </h2>
       <div className="cardContainer">
         {dealerDeck.map((index, value) => {
           return <Card key={value} img={index.img} />;
         })}
       </div>
       <h2>
-        Player ({playerScore}) Results: {playerMessage}
+        Player ({playerScore}) {playerMessage}
       </h2>
       <div className="cardContainer">
         {playerDeck.map((index, value) => {
