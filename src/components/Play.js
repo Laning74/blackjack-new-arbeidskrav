@@ -16,13 +16,14 @@ export default function Play({ restartToPlay }) {
   const [playerScore, setPlayerScore] = useState(0);
   const [dealerScore, setDealerScore] = useState(0);
 
-  const [playerAceScore, setPlayerAceScore] = useState(0);
-  const [dealerAceScore, setDealerAceScore] = useState(0);
+  // const [playerAceScore, setPlayerAceScore] = useState(0);
+  // const [dealerAceScore, setDealerAceScore] = useState(0);
 
   const [playerMessage, setPlayerMessage] = useState("");
   const [dealerMessage, setDealerMessage] = useState("");
 
   const [playerName, setPlayerName] = useState("");
+  const [dealersTurn, setDealersTurn] = useState(false);
 
   const [score, setScore] = useState([]);
   useEffect(() => {
@@ -38,32 +39,48 @@ export default function Play({ restartToPlay }) {
     }
   }, []);
 
+  // useEffect(() => {
+  //   checkAce();
+
+  // }, []);
+
   useEffect(() => {
     handleScore();
     // console.log(dealerScore);
     // console.log(playerScore);
   }, [playerScore, dealerScore, playerDeck, dealerDeck]);
 
-  function handleScore() {
+  const checkAce = () => {
     let calculatePlayer = 0;
+    // console.log("player", playerDeck);
+    playerDeck.forEach((deck) => {
+      calculatePlayer += deck.value;
+      if (calculatePlayer > 21 && deck.name === "A") {
+        setPlayerScore(calculatePlayer - 10);
+      } else {
+        setPlayerScore(calculatePlayer);
+      }
+    });
+  };
+
+  function handleScore() {
+    checkAce();
+
     let calculateDealer = 0;
     // console.log(playerDeck);
-    playerDeck.forEach((item) => {
-      calculatePlayer += item.value;
-    });
-    setPlayerScore(calculatePlayer);
-
+    // playerDeck.forEach((item) => {});
+    // setPlayerScore(calculatePlayer);
+    // console.log(dealerDeck);
     dealerDeck.forEach((item) => {
       calculateDealer += item.value;
     });
+
     setDealerScore(calculateDealer);
     if (playerScore === 21) {
       setPlayerMessage("The winner! 🏆");
     } else if (playerScore > 21) {
       setPlayerMessage("Looser");
     }
-    // console.log("Total player: " + calculatePlayer);
-    // console.log("Total dealer: " + calculateDealer);
   }
 
   function hitButton() {
@@ -72,73 +89,46 @@ export default function Play({ restartToPlay }) {
     setPlayerDeck((playerDeck) => [...playerDeck, deck[randomCard]]);
     // handleScore();
     // setPlayerScore(playerScore);
-
     handleScore();
   }
 
   function standButton() {
-    // let newDealerScore = calculatePlayer;
-    const randomCard = Math.floor(Math.random() * deck.length);
-    setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
-    if (dealerScore === 21) {
-      setDealerMessage("The winner! 🏆");
-      setPlayerMessage("Looser");
-    }
-    if (dealerScore > playerScore) {
-      setDealerMessage("The winner! 🏆");
-      setPlayerMessage("Looser");
-    } else if (dealerScore < playerScore) {
-      setPlayerMessage("The winner! 🏆");
-      setDealerMessage("Looser");
-    } else if (dealerScore === playerScore) {
-      setPlayerMessage("Tie!");
-      setDealerMessage("Tie!");
-    }
-    handleScore();
-    console.log("playerdeck", playerDeck);
-    console.log("dealerdeck", dealerDeck);
+    setDealersTurn(true);
   }
+  // let newDealerArray = [0];
 
-  // function aceScore() {
+  useEffect(() => {
+    if (dealersTurn === true) {
+      console.log("dealerscore", dealerScore);
+      if (dealerScore < 17) {
+        const randomCard = Math.floor(Math.random() * deck.length);
+        setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
 
-  // }
+        console.log("dealerDeck", dealerDeck);
+      }
 
-  // let newDealerScore = calculatePlayer;
-  // function ReduceAce(playerScore, playerAceScore) {
-  //   while (playerScore > 21 && playerAceScore > 0) {
-  //     playerScore -= 10;
-  //     playerAceScore -= 1;
-  //   }
-  //   return playerScore;
-  // }
+      // const randomCard = Math.floor(Math.random() * deck.length);
+      // setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
+      // console.log(deck[randomCard]);
+      // console.log(dealerDeck);
+      // handleScore();
 
-  // function GetScore() {
-  //   playerScore = ReduceAce(playerScore, playerAceScore);
-  //   dealerScore = ReduceAce(dealerScore, dealerAceScore);
-  //   let message = (playerMessage, dealerMessage) => {
-  //     if (playerScore > 21) {
-  //       message = "You Lose!";
-  //     } else if (dealerScore > 21) {
-  //       message = "You win!";
-  //     }
-  //     //both you and dealer <= 21
-  //     else if (playerScore == dealerScore) {
-  //       message = "Tie!";
-  //     } else if (playerScore > dealerScore) {
-  //       message = "You Win!";
-  //     } else if (playerScore < dealerScore) {
-  //       message = "You Lose!";
-  //     }
-  //   };
-  // }
-  // GetScore();
-
-  //   function checkAce(card) {
-  //     if (card[0] == "A") {
-  //       return 1;
-  //     }
-  //     return 0;
-  //   }
+      if (dealerScore === 21) {
+        setDealerMessage("The winner! 🏆");
+        setPlayerMessage("Looser");
+      }
+      if (dealerScore > playerScore) {
+        setDealerMessage("The winner! 🏆");
+        setPlayerMessage("Looser");
+      } else if (dealerScore < playerScore) {
+        setPlayerMessage("The winner! 🏆");
+        setDealerMessage("Looser");
+      } else if (dealerScore === playerScore) {
+        setPlayerMessage("Tie!");
+        setDealerMessage("Tie!");
+      }
+    }
+  }, [dealersTurn, dealerScore]);
 
   return (
     <div>

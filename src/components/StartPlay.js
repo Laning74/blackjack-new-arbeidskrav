@@ -5,7 +5,15 @@ import blackJackPlayBtn from "../images/blackjack_play_btn.png";
 const StartPlay = ({ startToPlay }) => {
   const [name, setName] = useState("");
 
-  localStorage.setItem("Name", name);
+  useEffect(() => {
+    const playerNames = localStorage.getItem("Name");
+    console.log(playerNames);
+  }, []);
+
+  function handleSetName(namestring) {
+    setName(namestring);
+    localStorage.setItem("Name", namestring);
+  }
 
   return (
     <div>
@@ -19,7 +27,7 @@ const StartPlay = ({ startToPlay }) => {
         className="name-input"
         value={name}
         placeholder="Skriv inn ditt navn"
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => handleSetName(e.target.value)}
       ></input>
       <br />
       {name === "" ? (
