@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import blackJackLogo from "../images/blackjack_logo.png";
 import blackJackPlayBtn from "../images/blackjack_play_btn.png";
 
 const StartPlay = ({ startToPlay }) => {
   const [name, setName] = useState("");
 
-  useEffect(() => {
-    const playerNames = localStorage.getItem("Playername");
-    console.log(playerNames);
-  }, []);
+  // Funksjon for og få navnet du skriver inn til og dukke opp i velkommen til spill..... og localStorage
 
   function handleSetName(namestring) {
     setName(namestring);
@@ -45,11 +42,3 @@ const StartPlay = ({ startToPlay }) => {
 };
 
 export default StartPlay;
-
-//  {
-//    name === !"" ? (
-//      <PrimaryButton text={"Start playing BlackJack"} onClick={startToPlay} />
-//    ) : (
-//      "startToPlay"
-//    );
-//  }

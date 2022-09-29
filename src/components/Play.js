@@ -34,8 +34,9 @@ export default function Play({ restartToPlay }) {
   }, [playerScore]);
 
   // Playername i localStorage
+
   useEffect(() => {
-    const playerNames = localStorage.getItem("Name");
+    const playerNames = localStorage.getItem("Playername");
     if (playerNames) {
       setPlayerName(playerNames);
     }
@@ -86,7 +87,7 @@ export default function Play({ restartToPlay }) {
   // Funksjon for og få nytt kort når player trykker på Hit button
   function hitButton() {
     const randomCard = getRandomCard();
-    setPlayerDeck((playerDeck) => [...playerDeck, deck[randomCard]]);
+    setPlayerDeck((playerDeck) => [...playerDeck, randomCard]);
 
     handleScore();
   }
@@ -105,12 +106,11 @@ export default function Play({ restartToPlay }) {
       if (dealerScore === 21) {
         setDealerMessage("The winner! 🏆");
         setPlayerMessage("Looser!");
-      }
-      if (dealerScore > playerScore) {
+      } else if (dealerScore > playerScore) {
         setDealerMessage("The winner! 🏆");
         // setPlayerMessage("Looser!");
       } else if (dealerScore < playerScore) {
-        setPlayerMessage("The winner! 🏆");
+        // setPlayerMessage("The winner! 🏆");
         setDealerMessage("Looser!");
       } else if (dealerScore === playerScore) {
         setPlayerMessage("Tie!");
@@ -118,6 +118,7 @@ export default function Play({ restartToPlay }) {
       }
       if (dealerScore > 21) {
         setDealerMessage("Looser!");
+        setPlayerMessage("The winner! 🏆");
       }
     }
   }, [dealersTurn, playerScore, dealerScore]);
@@ -131,27 +132,23 @@ export default function Play({ restartToPlay }) {
       />
       <h1>{playerName} velkommen til å spille Online BlackJack!</h1>
 
-      <PrimaryButton text={"New game"} onClick={restartToPlay} />
-
       {playerMessage === "" ? (
         <PrimaryButton text={"Hit"} onClick={hitButton} />
       ) : (
         ""
       )}
 
-      <PrimaryButton text={"Stand"} onClick={standButton} />
-
-      {/* {playerMessage && dealerMessage === "" ? (
-        ""
-      ) : (
-        <PrimaryButton text={"Stand"} onClick={hitButton} />
-      )} */}
-
-      {/* {playerMessage && dealerMessage === "" ? (
-        <PrimaryButton text={"Stand"} onClick={hitButton} />
+      {playerMessage === "" ? (
+        <PrimaryButton text={"Stand"} onClick={standButton} />
       ) : (
         ""
-      )} */}
+      )}
+
+      {playerMessage === "" ? (
+        ""
+      ) : (
+        <PrimaryButton text={"New game"} onClick={restartToPlay} />
+      )}
 
       <h2>
         Dealer ({dealerScore}) {dealerMessage}
