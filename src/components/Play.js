@@ -4,20 +4,17 @@ import PrimaryButton from "../components/PrimaryButton";
 import "./styles/Card.css";
 import deck from "../deck";
 import Card from "../components/Card";
-import { randomPlayerArray, randomDealerArray } from "./RandomCardArray";
+import { getRandomCard } from "./RandomCardArray";
 
 export default function Play({ restartToPlay }) {
-  const [playerDeck, setPlayerDeck] = useState(randomPlayerArray);
-  const [dealerDeck, setDealerDeck] = useState(randomDealerArray);
-
-  // const [playerCount, setPlayerCount] = useState(0);
-  // const [dealerCount, setDealerCount] = useState(0);
+  const [playerDeck, setPlayerDeck] = useState([
+    getRandomCard(),
+    getRandomCard(),
+  ]);
+  const [dealerDeck, setDealerDeck] = useState([getRandomCard()]);
 
   const [playerScore, setPlayerScore] = useState(0);
   const [dealerScore, setDealerScore] = useState(0);
-
-  // const [playerAceScore, setPlayerAceScore] = useState(0);
-  // const [dealerAceScore, setDealerAceScore] = useState(0);
 
   const [playerMessage, setPlayerMessage] = useState("");
   const [dealerMessage, setDealerMessage] = useState("");
@@ -25,13 +22,18 @@ export default function Play({ restartToPlay }) {
   const [playerName, setPlayerName] = useState("");
   const [dealersTurn, setDealersTurn] = useState(false);
 
-  const [score, setScore] = useState([]);
+  // Playerscore i localStorage
   useEffect(() => {
-    localStorage.setItem("score", JSON.stringify(playerScore));
+    const data = localStorage.getItem("Playerscore");
+    if (data !== "") setPlayerScore(JSON.parse(data));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("Playerscore", JSON.stringify(playerScore));
+    // console.log(playerScore);
   }, [playerScore]);
 
-  // const [stageMode, setStageMode] = useState("start");
-  // console.log(restartToPlay);
+  // Playername i localStorage
   useEffect(() => {
     const playerNames = localStorage.getItem("Name");
     if (playerNames) {
@@ -39,20 +41,18 @@ export default function Play({ restartToPlay }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   checkAce();
+  useEffect(() => {
+    localStorage.setItem("playerName", JSON.stringify(playerName));
+  }, [playerName]);
 
-  // }, []);
-
+  // Poeng til Player og Dealer
   useEffect(() => {
     handleScore();
-    // console.log(dealerScore);
-    // console.log(playerScore);
   }, [playerScore, dealerScore, playerDeck, dealerDeck]);
 
+  // Funksjon for og sette Ess (A) til poeng 11 eller 1 og telle poeng/score player
   const checkAce = () => {
     let calculatePlayer = 0;
-    // console.log("player", playerDeck);
     playerDeck.forEach((deck) => {
       calculatePlayer += deck.value;
       if (calculatePlayer > 21 && deck.name === "A") {
@@ -63,14 +63,12 @@ export default function Play({ restartToPlay }) {
     });
   };
 
+  // Funksjon for og telle poeng/score dealer + message
   function handleScore() {
     checkAce();
 
     let calculateDealer = 0;
-    // console.log(playerDeck);
-    // playerDeck.forEach((item) => {});
-    // setPlayerScore(calculatePlayer);
-    // console.log(dealerDeck);
+
     dealerDeck.forEach((item) => {
       calculateDealer += item.value;
     });
@@ -78,57 +76,51 @@ export default function Play({ restartToPlay }) {
     setDealerScore(calculateDealer);
     if (playerScore === 21) {
       setPlayerMessage("The winner! 🏆");
+      setDealerMessage("Looser");
     } else if (playerScore > 21) {
       setPlayerMessage("Looser");
+      setDealerMessage("The winner! 🏆");
     }
   }
 
+  // Funksjon for og få nytt kort når player trykker på Hit button
   function hitButton() {
-    // let newPlayerScore
-    const randomCard = Math.floor(Math.random() * deck.length);
+    const randomCard = getRandomCard();
     setPlayerDeck((playerDeck) => [...playerDeck, deck[randomCard]]);
-    // handleScore();
-    // setPlayerScore(playerScore);
+
     handleScore();
   }
 
+  // Når player trykker på Stand button får dealer random kort
   function standButton() {
     setDealersTurn(true);
   }
-  // let newDealerArray = [0];
 
   useEffect(() => {
     if (dealersTurn === true) {
-      console.log("dealerscore", dealerScore);
       if (dealerScore < 17) {
         const randomCard = Math.floor(Math.random() * deck.length);
         setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
-
-        console.log("dealerDeck", dealerDeck);
       }
-
-      // const randomCard = Math.floor(Math.random() * deck.length);
-      // setDealerDeck((dealerDeck) => [...dealerDeck, deck[randomCard]]);
-      // console.log(deck[randomCard]);
-      // console.log(dealerDeck);
-      // handleScore();
-
       if (dealerScore === 21) {
         setDealerMessage("The winner! 🏆");
-        setPlayerMessage("Looser");
+        setPlayerMessage("Looser!");
       }
       if (dealerScore > playerScore) {
         setDealerMessage("The winner! 🏆");
-        setPlayerMessage("Looser");
+        // setPlayerMessage("Looser!");
       } else if (dealerScore < playerScore) {
         setPlayerMessage("The winner! 🏆");
-        setDealerMessage("Looser");
+        setDealerMessage("Looser!");
       } else if (dealerScore === playerScore) {
         setPlayerMessage("Tie!");
         setDealerMessage("Tie!");
       }
+      if (dealerScore > 21) {
+        setDealerMessage("Looser!");
+      }
     }
-  }, [dealersTurn, dealerScore]);
+  }, [dealersTurn, playerScore, dealerScore]);
 
   return (
     <div>
@@ -137,7 +129,8 @@ export default function Play({ restartToPlay }) {
         alt="Blackjack logo"
         className="blackjack-logo"
       />
-      <h1>{playerName} velkommen til og spille Online BlackJack!</h1>
+      <h1>{playerName} velkommen til å spille Online BlackJack!</h1>
+
       <PrimaryButton text={"New game"} onClick={restartToPlay} />
 
       {playerMessage === "" ? (
@@ -147,6 +140,19 @@ export default function Play({ restartToPlay }) {
       )}
 
       <PrimaryButton text={"Stand"} onClick={standButton} />
+
+      {/* {playerMessage && dealerMessage === "" ? (
+        ""
+      ) : (
+        <PrimaryButton text={"Stand"} onClick={hitButton} />
+      )} */}
+
+      {/* {playerMessage && dealerMessage === "" ? (
+        <PrimaryButton text={"Stand"} onClick={hitButton} />
+      ) : (
+        ""
+      )} */}
+
       <h2>
         Dealer ({dealerScore}) {dealerMessage}
       </h2>

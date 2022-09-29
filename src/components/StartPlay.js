@@ -6,13 +6,13 @@ const StartPlay = ({ startToPlay }) => {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    const playerNames = localStorage.getItem("Name");
+    const playerNames = localStorage.getItem("Playername");
     console.log(playerNames);
   }, []);
 
   function handleSetName(namestring) {
     setName(namestring);
-    localStorage.setItem("Name", namestring);
+    localStorage.setItem("Playername", namestring);
   }
 
   return (
@@ -31,7 +31,7 @@ const StartPlay = ({ startToPlay }) => {
       ></input>
       <br />
       {name === "" ? (
-        name
+        ""
       ) : (
         <img
           src={blackJackPlayBtn}
@@ -40,10 +40,6 @@ const StartPlay = ({ startToPlay }) => {
           onClick={startToPlay}
         />
       )}
-
-      {/* <button className="startPlay" onClick={startToPlay}>
-        Start playing BlackJack
-      </button> */}
     </div>
   );
 };
